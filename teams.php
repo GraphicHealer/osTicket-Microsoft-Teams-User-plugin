@@ -233,7 +233,7 @@ class TeamsUNPlugin extends Plugin {
                     'contentUrl' => NULL,
                     'content' => [
                         'type' => 'AdaptiveCard',
-                        'body' => [[
+                        'body' => [
                             0 => [
                                 'type' => 'TextBlock',
                                 'size' => 'large',
@@ -282,7 +282,7 @@ class TeamsUNPlugin extends Plugin {
                                 'wrap' => true,
                                 'isVisible' => false,
                             ],
-                        ]],
+                        ],
                         'msteams' => '',
                         'actions' => [
                             0 => [
@@ -339,7 +339,7 @@ class TeamsUNPlugin extends Plugin {
                     ],
                 ],
             ];
-			$message['sections']['content']['msteams'] = $mentionArray;
+			$message['attachments']['content']['msteams'] = $mentionArray;
         };
 
         if($this->getConfig()->get('teams-message-display')) {
@@ -357,7 +357,7 @@ class TeamsUNPlugin extends Plugin {
                 'text' => $msgText->getBody()->getClean(),
                 'wrap' => true,
             ];
-			array_push($message['sections']['content']['body'], $outArray);
+			array_push($message['attachments']['content']['body'], $outArray);
         };
         $myfile = fopen("/var/log/php/plugin.log", "w");
         fwrite($myfile, json_encode($message, JSON_UNESCAPED_SLASHES));
