@@ -233,7 +233,7 @@ class TeamsUNPlugin extends Plugin {
                     'contentUrl' => NULL,
                     'content' => [
                         'type' => 'AdaptiveCard',
-                        'body' => [
+                        'body' => [[
                             0 => [
                                 'type' => 'TextBlock',
                                 'size' => 'large',
@@ -282,7 +282,7 @@ class TeamsUNPlugin extends Plugin {
                                 'wrap' => true,
                                 'isVisible' => false,
                             ],
-                        ],
+                        ]],
                         'msteams' => '',
                         'actions' => [
                             0 => [
