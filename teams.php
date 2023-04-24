@@ -10,7 +10,7 @@ require_once('config.php');
 
 class TeamsUNPlugin extends Plugin {
 
-    var $config_class = "TeamsPluginConfig";
+    var $config_class = " TeamsUNPluginConfig";
     static $pluginInstance = null;
 
     private function getPluginInstance(?int $id){
