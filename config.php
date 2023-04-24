@@ -36,7 +36,7 @@ class TeamsPluginConfig extends PluginConfig {
                 'label' => $__('Teams notifier'),
                 'hint'  => $__('Readme first: https://github.com/gljones2001/osTicket-Microsoft-Teams-User-plugin')
             )),
-            'teams-webhook-url'          => new TextboxField(array(
+            'teams-webhook-url' => new TextboxField(array(
                 'label'         => $__('Webhook URL'),
                 'configuration' => array(
                     'size'   => 100,
