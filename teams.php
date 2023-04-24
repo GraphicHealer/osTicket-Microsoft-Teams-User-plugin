@@ -359,7 +359,7 @@ class TeamsUNPlugin extends Plugin {
             ];
 			array_push($message['sections']['content']['body'], $outArray);
         };
-
+        error_log(json_encode($message, JSON_UNESCAPED_SLASHES));
         return json_encode($message, JSON_UNESCAPED_SLASHES);
 
     }
