@@ -142,7 +142,7 @@ class TeamsUNPlugin extends Plugin {
             }
         } catch (\Exception $e) {
             $ost->logError('Teams posting issue!', $e->getMessage(), true);
-            error_log('Error posting to Teams. ' . $e->getMessage());
+            error_log('Error posting to Teams. ' . $e->getMessage() . $ch);
         } finally {
             curl_close($ch);
         }
