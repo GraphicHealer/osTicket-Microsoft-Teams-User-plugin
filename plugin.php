@@ -1,11 +1,11 @@
 <?php
 
 return array(
-    'id'          => 'osticket:teams',
+    'id'          => 'osticket:teams-user',
     'version'     => '0.1',
-    'name'        => 'Teams notifier',
-    'author'      => 'Ivan Pavlović',
-    'description' => 'Notify Teams on new ticket.',
-    'url'         => 'https://github.com/ipavlovi/osTicket-Microsoft-Teams-plugin',
-    'plugin'      => 'teams.php:TeamsPlugin',
+    'name'        => 'Teams User Notifier',
+    'author'      => 'Ivan Pavlović, Modified by Garrett Jones',
+    'description' => 'Notify Users on Teams on ticket updates.',
+    'url'         => 'https://github.com/gljones2001/osTicket-Microsoft-Teams-User-plugin',
+    'plugin'      => 'teams.php:TeamsUNPlugin',
 );

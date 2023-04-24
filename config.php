@@ -34,7 +34,7 @@ class TeamsPluginConfig extends PluginConfig {
         return array(
             'teams'                      => new SectionBreakField(array(
                 'label' => $__('Teams notifier'),
-                'hint'  => $__('Readme first: https://github.com/ipavlovi/osTicket-Microsoft-Teams-plugin')
+                'hint'  => $__('Readme first: https://github.com/gljones2001/osTicket-Microsoft-Teams-User-plugin')
             )),
             'teams-webhook-url'          => new TextboxField(array(
                 'label'         => $__('Webhook URL'),
@@ -43,6 +43,11 @@ class TeamsPluginConfig extends PluginConfig {
                     'length' => 700
                 ),
             )),
+            'teams-enable-mention' => new BooleanField([
+                'label' => $__('Enable user mentioning.'),
+                'hint' => $__('Check to enable mentioning.'),
+                'default' => FALSE
+            ]),
             'teams-regex-subject-ignore' => new TextboxField([
                 'label'         => $__('Ignore when subject equals regex'),
                 'hint'          => $__('Auto delimited, always case-insensitive'),

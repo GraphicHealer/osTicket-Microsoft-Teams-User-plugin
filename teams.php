@@ -14,16 +14,16 @@ class TeamsPlugin extends Plugin {
     static $pluginInstance = null;
 
     private function getPluginInstance(?int $id){
-	if($id && ($i = $this->getInstance($id)))
-	    return $i;
+        if($id && ($i = $this->getInstance($id)))
+            return $i;
 
-	return $this->getInstances()->first();
+        return $this->getInstances()->first();
     }
     /**
      * The entrypoint of the plugin, keep short, always runs.
      */
     function bootstrap() {
-	self::$pluginInstance = self::getPluginInstance(null);
+	    self::$pluginInstance = self::getPluginInstance(null);
 
         // Listen for osTicket to tell us it's made a new ticket or updated
         // an existing ticket:
@@ -33,21 +33,21 @@ class TeamsPlugin extends Plugin {
     }
 
     function onTicketCreated(Ticket $ticket) {
-	global $cfg;
-        
-	if(!$cfg instanceof OsTicketConfig){
-	    error_log("Teams Plugin calls too early.");
-	}
+        global $cfg;
+            
+        if(!$cfg instanceof OsTicketConfig){
+            error_log("Teams Plugin calls too early.");
+        }
 
-	$type = 'Issue created: ';
+        $type = 'Issue created: ';
 
-	$this->sendToTeams($ticket, $type);
+        $this->sendToTeams($ticket, $type);
     }
 
     function onTicketUpdated(ThreadEntry $entry) {
 		$type = 'Issue Updated: ';
-		if (!$entry instanceof MessageThreadEntry) {
-		    // this was a reply or a system entry.. not a message from a user
+		if ($entry instanceof MessageThreadEntry) {
+		    // this was a message from a user. Don't notify.
 		    return;
 		}
 
@@ -64,7 +64,7 @@ class TeamsPlugin extends Plugin {
 		    return;
 		}
 
-		$this->sendToTeams($ticket, $type, 'warning');
+		$this->sendToTeams($ticket, $type);
 	    }
 
     /**
@@ -79,14 +79,14 @@ class TeamsPlugin extends Plugin {
      * @throws \Exception
      */
     function sendToTeams(Ticket $ticket, $type, $colour = 'good') {
-	global $ost,$cfg;
+        global $ost,$cfg;
 
-	if(!$cfg instanceof OsTicketConfig){
-	    error_log("Teams Plugin calls too early.");
-	    return;
-	}
+        if(!$cfg instanceof OsTicketConfig){
+            error_log("Teams Plugin calls too early.");
+            return;
+        }
 
-	$url=$this->getConfig(self::$pluginInstance)->get('teams-webhook-url');
+        $url=$this->getConfig(self::$pluginInstance)->get('teams-webhook-url');
 
         if (!$url) {
             $ost->logError('Teams Plugin not configured', 'You need to read the Readme and configure a webhook URL before using this.');
@@ -224,11 +224,81 @@ class TeamsPlugin extends Plugin {
     private function createJsonMessage($ticket, $type = null, $color = 'AFAFAF')
     {
         global $cfg;
-        if ($ticket->isOverdue()) {
-            $color = 'ff00ff';
-        }
         //Prepare message array to convert to json
         $message = [
+            'type' => 'message',
+            'attachments' => [
+                0 => [
+                    'contentType' => 'application/vnd.microsoft.card.adaptive',
+                    'contentUrl' => NULL,
+                    'content' => [
+                        'type' => 'AdaptiveCard',
+                        'body' => [
+                            0 => [
+                                'type' => 'TextBlock',
+                                'size' => 'large',
+                                'weight' => 'bolder',
+                                'text' => $this->format_text($type . $ticket->getSubject()),
+                            ],
+                            1 => [
+                                'type' => 'ColumnSet',
+                                'columns' => [
+                                    0 => [
+                                        'type' => 'Column',
+                                        'items' => [
+                                            0 => [
+                                                'type' => 'Image',
+                                                'style' => 'Person',
+                                                'url' => $this->get_gravatar($ticket->getEmail()),
+                                                'size' => 'Medium',
+                                            ],
+                                    ],
+                                    'width' => 'auto',
+                                    ],
+                                    1 => [
+                                        'type' => 'Column',
+                                        'items' => [
+                                            0 => [
+                                                'type' => 'TextBlock',
+                                                'weight' => 'Bolder',
+                                                'text' => ($ticket->getName() ? $ticket->getName() : 'Guest ') . ' (sent by ' . $ticket->getEmail() . ')',
+                                                'wrap' => true,
+                                            ],
+                                            1 => [
+                                                'type' => 'TextBlock',
+                                                'spacing' => 'None',
+                                                'text' => $ticket->getUpdateDate(),
+                                                'isSubtle' => true,
+                                                'wrap' => true,
+                                            ],
+                                        ],
+                                        'width' => 'stretch',
+                                    ],
+                                ],
+                            ],
+                            2 => [
+                                'type' => 'TextBlock',
+                                'text' => '<at>user.mention</at>',
+                                'wrap' => true,
+                                'isVisible' => false,
+                            ],
+                        ],
+                        'actions' => [
+                            0 => [
+                                'type' => 'Action.OpenUrl',
+                                'title' => 'View Ticket',
+                                'url' => $cfg->getUrl() . 'tickets.php?id=' . $ticket->getId(),
+                                'style' => 'positive',
+                            ],
+                        ],
+                        '$schema' => 'http://adaptivecards.io/schemas/adaptive-card.json',
+                        'version' => '1.4',
+                    ],
+                ],
+            ],
+        ]
+        
+        /* $message = [
             '@type' => 'MessageCard',
             '@context' => 'https://schema.org/extensions',
             'summary' => 'Ticket: ' . $ticket->getNumber(),
@@ -244,16 +314,32 @@ class TeamsPlugin extends Plugin {
             'potentialAction' => [
                 [
                     '@type' => 'OpenUri',
-                    'name' => 'View in osTicket',
+                    'name' => 'View Ticket',
                     'targets' => [
                         [
                             'os' => 'default',
-                            'uri' => $cfg->getUrl() . 'scp/tickets.php?id=' . $ticket->getId(),
+                            'uri' => $cfg->getUrl() . 'tickets.php?id=' . $ticket->getId(),
                         ]
                     ]
                 ]
             ]
-        ];
+        ]; */
+
+        if($this->getConfig()->get('teams-enable-mention')) {
+            $mentionArray = 'msteams' => [
+                'entities' => [
+                    0 => [
+                        'type' => 'mention',
+                        'text' => '<at>user.mention</at>',
+                        'mentioned' => [
+                            'id' => $ticket->getEmail(),
+                            'name' => ($ticket->getName() ? $ticket->getName() : 'Guest'),
+                        ],
+                    ],
+                ],
+            ];
+			array_push($message['sections']['content'], $mentionArray);
+        };
         if($this->getConfig()->get('teams-message-display')) {
             $msgArray = $ticket->getMessages();
 			$FirstMessage = $msgArray[0];
@@ -263,8 +349,13 @@ class TeamsPlugin extends Plugin {
 			if($msgText == null)
 			{
 				$msgText = $FirstMessage;
-			}
-			array_push($message['sections'], ['text' => $msgText->getBody()->getClean()]);
+			};
+            $outArray = [
+                'type' => 'TextBlock',
+                'text' => $msgText->getBody()->getClean(),
+                'wrap' => true,
+            ];
+			array_push($message['sections']['content']['body'], $outArray);
         }
 
         return json_encode($message, JSON_UNESCAPED_SLASHES);
