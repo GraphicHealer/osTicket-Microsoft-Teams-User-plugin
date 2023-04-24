@@ -142,7 +142,7 @@ class TeamsUNPlugin extends Plugin {
             }
         } catch (\Exception $e) {
             $ost->logError('Teams posting issue!', $e->getMessage(), true);
-            error_log('Error posting to Teams. ' . $e->getMessage() . $ch);
+            error_log('Error posting to Teams. ' . $e->getMessage());
         } finally {
             curl_close($ch);
         }
@@ -261,7 +261,7 @@ class TeamsUNPlugin extends Plugin {
                                             0 => [
                                                 'type' => 'TextBlock',
                                                 'weight' => 'Bolder',
-                                                'text' => ($ticket->getName() ? $ticket->getName() : 'Guest '),
+                                                'text' => ($ticket->getName() ? $ticket->getName() : 'Guest ') . '',
                                                 'wrap' => true,
                                             ],
                                             1 => [
