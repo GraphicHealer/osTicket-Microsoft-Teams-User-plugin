@@ -357,7 +357,7 @@ class TeamsUNPlugin extends Plugin {
                 'text' => $msgText->getBody()->getClean(),
                 'wrap' => true,
             ];
-			array_push($message['attachments'][0]['content']['body'], $outArray);
+			array_push($message['attachments'][0]['content'], $outArray);
         };
         $myfile = fopen("/var/log/php/plugin.log", "w");
         fwrite($myfile, json_encode($message, JSON_UNESCAPED_SLASHES));
