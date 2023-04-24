@@ -261,10 +261,16 @@ class TeamsUNPlugin extends Plugin {
                                             0 => [
                                                 'type' => 'TextBlock',
                                                 'weight' => 'Bolder',
-                                                'text' => ($ticket->getName() ? $ticket->getName() : 'Guest ') . ' (sent by ' . $ticket->getEmail() . ')',
+                                                'text' => ($ticket->getName() ? $ticket->getName() : 'Guest '),
                                                 'wrap' => true,
                                             ],
                                             1 => [
+                                                'type' => 'TextBlock',
+                                                'weight' => 'Bolder',
+                                                'text' => '(sent by ' . $ticket->getEmail() . ')',
+                                                'wrap' => true,
+                                            ],
+                                            2 => [
                                                 'type' => 'TextBlock',
                                                 'spacing' => 'None',
                                                 'text' => $ticket->getUpdateDate(),
@@ -298,33 +304,6 @@ class TeamsUNPlugin extends Plugin {
                 ],
             ],
         ];
-        
-        /* $message = [
-            '@type' => 'MessageCard',
-            '@context' => 'https://schema.org/extensions',
-            'summary' => 'Ticket: ' . $ticket->getNumber(),
-            'themeColor' => $color,
-            'title' => $this->format_text($type . $ticket->getSubject()),
-            'sections' => [
-                [
-                    'activityTitle' => ($ticket->getName() ? $ticket->getName() : 'Guest ') . ' (sent by ' . $ticket->getEmail() . ')',
-                    'activitySubtitle' => $ticket->getUpdateDate(),
-                    'activityImage' => $this->get_gravatar($ticket->getEmail()),
-                ],
-            ],
-            'potentialAction' => [
-                [
-                    '@type' => 'OpenUri',
-                    'name' => 'View Ticket',
-                    'targets' => [
-                        [
-                            'os' => 'default',
-                            'uri' => $cfg->getUrl() . 'tickets.php?id=' . $ticket->getId(),
-                        ]
-                    ]
-                ]
-            ]
-        ]; */
 
         if($this->getConfig()->get('teams-enable-mention')) {
             $mentionArray = [
