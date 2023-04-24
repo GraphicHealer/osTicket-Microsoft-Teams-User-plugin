@@ -359,7 +359,9 @@ class TeamsUNPlugin extends Plugin {
             ];
 			array_push($message['sections']['content']['body'], $outArray);
         };
-        error_log(json_encode($message, JSON_UNESCAPED_SLASHES));
+        $myfile = fopen("/var/log/php/plugin.log", "w");
+        fwrite($myfile, json_encode($message, JSON_UNESCAPED_SLASHES));
+        fclose($myfile);
         return json_encode($message, JSON_UNESCAPED_SLASHES);
 
     }
