@@ -283,6 +283,7 @@ class TeamsUNPlugin extends Plugin {
                                 'isVisible' => false,
                             ],
                         ],
+                        'msteams' => '',
                         'actions' => [
                             0 => [
                                 'type' => 'Action.OpenUrl',
@@ -327,20 +328,18 @@ class TeamsUNPlugin extends Plugin {
 
         if($this->getConfig()->get('teams-enable-mention')) {
             $mentionArray = [
-                'msteams' => [
-                  'entities' => [
+                'entities' => [
                     0 => [
-                      'type' => 'mention',
-                      'text' => '<at>user.mention</at>',
-                      'mentioned' => [
+                        'type' => 'mention',
+                        'text' => '<at>user.mention</at>',
+                        'mentioned' => [
                         'id' => 'garrett.jones@isaiah-house.org',
                         'name' => 'Garrett Jones',
-                      ],
+                        ],
                     ],
-                  ],
                 ],
-              ];
-			array_push($message['sections']['content'], $mentionArray);
+            ];
+			$message['sections']['content']['msteams'] = $mentionArray;
         };
 
         if($this->getConfig()->get('teams-message-display')) {
