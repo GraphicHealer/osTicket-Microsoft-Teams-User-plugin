@@ -46,7 +46,7 @@ class TeamsUNPlugin extends Plugin {
 
     function onTicketUpdated(ThreadEntry $entry) {
 		$type = 'Issue Updated: ';
-		if ($entry instanceof MessageThreadEntry) {
+		if (!$entry instanceof MessageThreadEntry) {
 		    // this was a message from a user. Don't notify.
 		    return;
 		}
