@@ -296,7 +296,7 @@ class TeamsPlugin extends Plugin {
                     ],
                 ],
             ],
-        ]
+        ];
         
         /* $message = [
             '@type' => 'MessageCard',
@@ -326,20 +326,23 @@ class TeamsPlugin extends Plugin {
         ]; */
 
         if($this->getConfig()->get('teams-enable-mention')) {
-            $mentionArray = 'msteams' => [
-                'entities' => [
-                    0 => [
-                        'type' => 'mention',
-                        'text' => '<at>user.mention</at>',
-                        'mentioned' => [
-                            'id' => $ticket->getEmail(),
-                            'name' => ($ticket->getName() ? $ticket->getName() : 'Guest'),
+            $mentionArray = [
+                'msteams' => [
+                    'entities' => [
+                        0 => [
+                            'type' => 'mention',
+                            'text' => '<at>user.mention</at>',
+                            'mentioned' => [
+                                'id' => $ticket->getEmail(),
+                                'name' => ($ticket->getName() ? $ticket->getName() : 'Guest'),
+                            ],
                         ],
                     ],
                 ],
             ];
 			array_push($message['sections']['content'], $mentionArray);
         };
+
         if($this->getConfig()->get('teams-message-display')) {
             $msgArray = $ticket->getMessages();
 			$FirstMessage = $msgArray[0];
@@ -356,7 +359,7 @@ class TeamsPlugin extends Plugin {
                 'wrap' => true,
             ];
 			array_push($message['sections']['content']['body'], $outArray);
-        }
+        };
 
         return json_encode($message, JSON_UNESCAPED_SLASHES);
 
