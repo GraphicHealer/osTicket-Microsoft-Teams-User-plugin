@@ -284,7 +284,7 @@ class TeamsUNPlugin extends Plugin {
                             ],
                             2 => [
                                 'type' => 'TextBlock',
-                                'text' => '<at>user.mention</at>',
+                                'text' => '##user.mention##',
                                 'wrap' => true,
                                 'isVisible' => false,
                             ],
@@ -310,7 +310,7 @@ class TeamsUNPlugin extends Plugin {
                 'entities' => [
                     0 => [
                         'type' => 'mention',
-                        'text' => '<at>user.mention</at>',
+                        'text' => '##user.mention##',
                         'mentioned' => [
                         'id' => 'garrett.jones@isaiah-house.org',
                         'name' => 'Garrett Jones',
