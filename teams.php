@@ -8,7 +8,7 @@ require_once(INCLUDE_DIR . 'class.config.php');
 require_once(INCLUDE_DIR . 'class.format.php');
 require_once('config.php');
 
-class TeamsPlugin extends Plugin {
+class TeamsUNPlugin extends Plugin {
 
     var $config_class = "TeamsPluginConfig";
     static $pluginInstance = null;
