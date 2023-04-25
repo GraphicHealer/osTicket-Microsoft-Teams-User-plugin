@@ -53,7 +53,7 @@ The way PHP handles HTML tags in json breaks mentioning in teams. In order for i
     
     r:SetRequestBody(out)
     ```
-If you are using a different webhook service, the basic idea of wwhat you are doing is a find and replace changing `##user.mention##` to `<at>user.mention</at>`. As long as you do that, the message will go through.
+If you are using a different webhook service, the basic idea of what you are doing is replacing `##user.mention##` with `<at>user.mention</at>`. As long as you do that, the message will go through.
 
 ## Test!
 Create or update a ticket!
