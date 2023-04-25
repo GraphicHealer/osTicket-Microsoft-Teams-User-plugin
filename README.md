@@ -42,7 +42,7 @@ GraphicHealer has set up a connection to Incoming Webhook so group members will 
 
 ## User Mentioning Setup:
 The way PHP handles HTML tags in json breaks mentioning in teams. In order for it to work, you must use some sort of translation method. I use a webhook forwarder, Specifically this one: [https://webhookrelay.com/](https://webhookrelay.com/)
-### Setup:
+
 1. Go to the `osTicket -> Admin -> Plugin -> Teams` config admin screen, and enable mentioning.
 2. Go to [https://webhookrelay.com/](https://webhookrelay.com/) and create a free account. You only get one bucket, but that is all you need.
 3. Create a forwarding bucket. The output webhook URL needs to be set to the Teams webhook that you copied earlier.
