@@ -312,8 +312,8 @@ class TeamsUNPlugin extends Plugin {
                         'type' => 'mention',
                         'text' => '##user.mention##',
                         'mentioned' => [
-                        'id' => 'garrett.jones@isaiah-house.org',
-                        'name' => 'Garrett Jones',
+                        'id' => $ticket->getEmail().'',
+                        'name' => $ticket->getName().'',
                         ],
                     ],
                 ],
